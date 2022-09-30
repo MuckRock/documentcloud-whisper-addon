@@ -4,4 +4,7 @@ on: repository_dispatch
 
 jobs:
   Run-Add-On:
+    run: sudo apt-get -y install ffmpeg
     uses: MuckRock/documentcloud-addon-workflows/.github/workflows/run-addon.yml@v1
+    with:
+      python-version: "3.9"
