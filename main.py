@@ -30,7 +30,7 @@ class Whisper(AddOn):
         print(result)
 
         with open(title, "w+") as file_:
-            for segment in results["segments"]:
+            for segment in result["segments"]:
                 timestamp = format_timestamp(segment["start"])
                 file_.write(f"{timestamp}: {segment['text']}\n")
             self.upload_file(file_)
