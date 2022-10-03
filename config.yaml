@@ -15,17 +15,12 @@ properties:
     type: string
     enum:
       - tiny
-      - tiny.en
       - base
-      - base.en
       - small
-      - small.en
       - medium
-      - medium.en
       - large
-      - large.en
-    description: One of tiny, base, small, medium or large, in order from quickest to most accurate.  Append .en for english only model, which should be more accurate for English only recordings.
-    default: base.en
+    description: One of tiny, base, small, medium or large, in order from quickest to most accurate.
+    default: base
 required:
   - url
   - title
