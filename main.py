@@ -12,7 +12,7 @@ class Whisper(AddOn):
     def main(self):
         url = self.data["url"]
 
-        with open("audio.mp3", "wb") as audo_file:
+        with open("audio.mp3", "wb") as audio_file:
             resp = requests.get(url)
             audio_file.write(resp.content)
 
