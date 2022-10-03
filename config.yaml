@@ -7,5 +7,25 @@ properties:
     title: URL
     type: string
     format: uri
+  title:
+    title: Title
+    type: string
+  model:
+    title: Model
+    type: string
+    enum:
+      - tiny
+      - tiny.en
+      - base
+      - base.en
+      - small
+      - small.en
+      - medium
+      - medium.en
+      - large
+      - large.en
+    description: One of tiny, base, small, medium or large, in order from quickest to most accurate.  Append .en for english only model, which should be more accurate for English only recordings.
+    default: base.en
 required:
   - url
+  - title
