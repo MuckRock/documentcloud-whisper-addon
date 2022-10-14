@@ -10,17 +10,17 @@ properties:
   title:
     title: Title
     type: string
-  model:
-    title: Model
-    type: string
-    enum:
-      - tiny
-      - base
-      - small
-      - medium
-      - large
-    description: One of tiny, base, small, medium or large, in order from quickest to most accurate.
-    default: base
+  #model:
+  #  title: Model
+  #  type: string
+  #  enum:
+  #    - tiny
+  #    - base
+  #    - small
+  #    - medium
+  #    - large
+  #  description: One of tiny, base, small, medium or large, in order from quickest to most accurate.
+  #  default: base
 required:
   - url
   - title

@@ -44,7 +44,7 @@ class Whisper(AddOn):
     def main(self):
         url = self.data["url"]
         title = self.data["title"]
-        model = self.data.get("model") or "base"
+        model = "base"
         title = f"{title}.txt"
 
         with open("audio.mp3", "wb") as audio_file:
