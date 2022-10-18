@@ -16,6 +16,7 @@ from lootdl import DROPBOX_URL, GDRIVE_URL, MEDIAFIRE_URL, WETRANSFER_URL
 
 MIN_WORDS = 8
 
+
 def format_timestamp(seconds):
     """Convert seconds in floating point to a string timestamp"""
     seconds = int(seconds)
@@ -45,11 +46,9 @@ def format_segments(result, file):
     # write out the final segment
     timestamp = format_timestamp(segment["start"])
     file.write(f"{timestamp}: {text}\n\n")
- 
 
 
 class Whisper(AddOn):
-
     def fetch_files(self, url):
         """Fetch the files from either a cloud share link or any public URL"""
 
@@ -93,7 +92,7 @@ class Whisper(AddOn):
 
         errors = 0
         successes = 0
-        for current_path, folders, files in os.walk('./out/'):
+        for current_path, folders, files in os.walk("./out/"):
             for file_name in files:
                 file_name = os.path.join(current_path, file_name)
                 basename = os.path.basename(file_name)
@@ -109,9 +108,11 @@ class Whisper(AddOn):
                 with open(f"{basename}.txt", "w+") as file_:
                     format_segments(result, file_)
 
-                self.client.documents.upload(file_name, original_extension="txt")
+                self.client.documents.upload(
+                    f"{basename}.txt", original_extension="txt"
+                )
                 successes += 1
-        
+
         self.set_message(f"Transcribed {successes} files, skipped {errors} files")
         shutil.rmtree("./out/", ignore_errors=False, onerror=None)
 
