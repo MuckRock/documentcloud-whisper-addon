@@ -113,7 +113,9 @@ class Whisper(AddOn):
                 )
                 successes += 1
 
-        self.set_message(f"Transcribed {successes} files, skipped {errors} files")
+        sfiles = "file" if successes == 1 else "files"
+        efiles = "file" if errors == 1 else "files"
+        self.set_message(f"Transcribed {successes} {sfiles}, skipped {errors} {efiles}")
         shutil.rmtree("./out/", ignore_errors=False, onerror=None)
 
 
