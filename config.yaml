@@ -1,5 +1,11 @@
 title: Whisper
-description: Transcribe an audio file using OpenAI's whisper
+description: >-
+  Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper).
+
+  You may upload audio files from any publically accessible URL.  You may also
+  use share links from Google Drive, Dropbox, Mediafire and Wetransfer.  If you
+  use a share link for a folder, it will process all files in that folder.
+
 type: object
 documents: []
 properties:
@@ -7,20 +13,7 @@ properties:
     title: URL
     type: string
     format: uri
-  title:
-    title: Title
-    type: string
-  #model:
-  #  title: Model
-  #  type: string
-  #  enum:
-  #    - tiny
-  #    - base
-  #    - small
-  #    - medium
-  #    - large
-  #  description: One of tiny, base, small, medium or large, in order from quickest to most accurate.
-  #  default: base
+    description: >-
+      A publically accessible audio file or a supported cloud storage share link
 required:
   - url
-  - title

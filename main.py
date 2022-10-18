@@ -2,9 +2,17 @@
 Upload transcribed audio files to DocumentCloud using Whisper
 """
 
+import os
+import shutil
+import sys
+from urllib.parse import urlparse
+
 import requests
 import whisper
 from documentcloud.addon import AddOn
+
+import lootdl
+from lootdl import DROPBOX_URL, GDRIVE_URL, MEDIAFIRE_URL, WETRANSFER_URL
 
 MIN_WORDS = 8
 
@@ -29,36 +37,83 @@ def format_segments(result, file):
         if text.endswith((".", "?", "!")) and len(text.split()) >= MIN_WORDS:
             timestamp = format_timestamp(start)
             file.write(f"{timestamp}: {text}\n\n")
-            start = s["start"]
-            text = s["text"]
+            start = segment["start"]
+            text = segment["text"]
         else:
-            text += s["text"]
+            text += segment["text"]
 
     # write out the final segment
-    timestamp = format_timestamp(s["start"])
+    timestamp = format_timestamp(segment["start"])
     file.write(f"{timestamp}: {text}\n\n")
  
 
 
 class Whisper(AddOn):
+
+    def fetch_files(self, url):
+        """Fetch the files from either a cloud share link or any public URL"""
+
+        self.set_message("Downloading the files...")
+
+        os.makedirs(os.path.dirname("./out/"), exist_ok=True)
+        cloud_urls = [DROPBOX_URL, GDRIVE_URL, MEDIAFIRE_URL, WETRANSFER_URL]
+        if any(cloud_url in url for cloud_url in cloud_urls):
+            # surpress output during lootdl download to avoid leaking
+            # private information
+            stdout = sys.stdout
+            sys.stdout = open(os.devnull, "w")
+            lootdl.grab(url, "./out/")
+            # restore stdout
+            sys.stdout = stdout
+        else:
+            parsed_url = urlparse(url)
+            basename = os.path.basename(parsed_url.path)
+            title, ext = os.path.splitext(basename)
+            if not title:
+                title = "audio_transcription"
+            if not ext:
+                ext = "mp3"
+            with requests.get(url, stream=True) as resp:
+                resp.raise_for_status()
+                with open(f"./out/{title}.{ext}", "wb") as audio_file:
+                    for chunk in resp.iter_content(chunk_size=8192):
+                        audio_file.write(chunk)
+
     def main(self):
         url = self.data["url"]
-        title = self.data["title"]
+        # we default to the base model - this could be made configurable
+        # but decided to keep things simple for now
         model = "base"
-        title = f"{title}.txt"
 
-        with open("audio.mp3", "wb") as audio_file:
-            resp = requests.get(url)
-            audio_file.write(resp.content)
+        self.fetch_files(url)
+
+        self.set_message("Preparing for transcription...")
 
         model = whisper.load_model(model)
-        result = model.transcribe("audio.mp3")
 
-        with open(title, "w+") as file_:
-            format_segments(result, file_)
-            self.upload_file(file_)
+        errors = 0
+        successes = 0
+        for current_path, folders, files in os.walk('./out/'):
+            for file_name in files:
+                file_name = os.path.join(current_path, file_name)
+                basename = os.path.basename(file_name)
+                self.set_message(f"Transcribing {basename}...")
+                try:
+                    result = model.transcribe(file_name)
+                except RuntimeError:
+                    # This probably means it was not an audio file
+                    print(f"Error transcribing {file_name}")
+                    errors += 1
+                    continue
 
-        self.client.documents.upload(title, original_extension="txt")
+                with open(f"{basename}.txt", "w+") as file_:
+                    format_segments(result, file_)
+
+                self.client.documents.upload(file_name, original_extension="txt")
+                successes += 1
+        
+        self.set_message(f"Transcribed {successes} files, skipped {errors} files")
+        shutil.rmtree("./out/", ignore_errors=False, onerror=None)
 
 
 if __name__ == "__main__":
