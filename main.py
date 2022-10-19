@@ -101,7 +101,6 @@ class Whisper(AddOn):
                     result = model.transcribe(file_name)
                 except RuntimeError:
                     # This probably means it was not an audio file
-                    print(f"Error transcribing {file_name}")
                     errors += 1
                     continue
 
