@@ -48,6 +48,17 @@ def format_segments(result, file):
 
 
 class Whisper(AddOn):
+    def check_permissions(self):
+        """The user must be a verified journalist to upload a document"""
+        self.set_message("Checking permissions...")
+        user = self.client.users.get("me")
+        if not user.verified_journalist:
+            self.set_message(
+                "You need to be verified to use this add-on. Please verify your "
+                "account here: https://airtable.com/shrZrgdmuOwW0ZLPM"
+            )
+            sys.exit()
+
     def fetch_files(self, url):
         """Fetch the files from either a cloud share link or any public URL"""
 
@@ -74,6 +85,8 @@ class Whisper(AddOn):
         # we default to the base model - this could be made configurable
         # but decided to keep things simple for now
         model = "base"
+
+        self.check_permissions()
 
         self.fetch_files(url)
 
