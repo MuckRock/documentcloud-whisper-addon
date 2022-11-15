@@ -4,3 +4,4 @@ git+https://github.com/openai/whisper.git
 tqdm
 patool
 bs4
+clouddl

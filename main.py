@@ -11,8 +11,7 @@ import requests
 import whisper
 from documentcloud.addon import AddOn
 
-import lootdl
-from lootdl import DROPBOX_URL, GDRIVE_URL, MEDIAFIRE_URL, WETRANSFER_URL
+from clouddl import grab
 
 MIN_WORDS = 8
 
@@ -55,16 +54,8 @@ class Whisper(AddOn):
         self.set_message("Downloading the files...")
 
         os.makedirs(os.path.dirname("./out/"), exist_ok=True)
-        cloud_urls = [DROPBOX_URL, GDRIVE_URL, MEDIAFIRE_URL, WETRANSFER_URL]
-        if any(cloud_url in url for cloud_url in cloud_urls):
-            # surpress output during lootdl download to avoid leaking
-            # private information
-            stdout = sys.stdout
-            sys.stdout = open(os.devnull, "w")
-            lootdl.grab(url, "./out/")
-            # restore stdout
-            sys.stdout = stdout
-        else:
+        downloaded = grab(url, "./out/")
+        if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
             title, ext = os.path.splitext(basename)
