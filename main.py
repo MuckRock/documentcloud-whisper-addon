@@ -12,6 +12,8 @@ import whisper
 from documentcloud.addon import AddOn
 
 from clouddl import grab
+from __future__ import unicode_literals
+import youtube_dl
 
 MIN_WORDS = 8
 
@@ -66,6 +68,17 @@ class Whisper(AddOn):
 
         os.makedirs(os.path.dirname("./out/"), exist_ok=True)
         downloaded = grab(url, "./out/")
+
+        if "youtube.com" in url or "youtu.be" in url:
+            r = requests.get(url)
+            if "Video unavailable" in r.text:
+                self.set_message("Not a valid YouTube video URL, please try again")
+                sys.exit(1)
+            else:
+                os.chdir("./out/")
+                ydl_opts = {'quiet': True, 'noplaylist': True}
+                os.chdir("..")
+                downloaded = 1
         if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
