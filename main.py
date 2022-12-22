@@ -78,7 +78,7 @@ class Whisper(AddOn):
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 os.chdir("..")
-                downloaded = 1
+                downloaded = True
         if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
