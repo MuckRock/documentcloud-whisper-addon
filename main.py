@@ -12,6 +12,7 @@ import whisper
 from documentcloud.addon import AddOn
 
 from clouddl import grab
+import youtube_dl
 
 MIN_WORDS = 8
 
