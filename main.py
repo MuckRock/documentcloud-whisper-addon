@@ -1,7 +1,7 @@
 """
 Upload transcribed audio files to DocumentCloud using Whisper
 """
-
+from __future__ import unicode_literals
 import os
 import shutil
 import sys
@@ -12,7 +12,6 @@ import whisper
 from documentcloud.addon import AddOn
 
 from clouddl import grab
-from __future__ import unicode_literals
 import youtube_dl
 
 MIN_WORDS = 8
