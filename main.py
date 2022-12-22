@@ -12,7 +12,6 @@ import whisper
 from documentcloud.addon import AddOn
 
 from clouddl import grab
-import youtube_dl
 
 MIN_WORDS = 8
 
@@ -76,6 +75,8 @@ class Whisper(AddOn):
             else:
                 os.chdir("./out/")
                 ydl_opts = {'quiet': True, 'noplaylist': True}
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([url])
                 os.chdir("..")
                 downloaded = 1
         if not downloaded:
