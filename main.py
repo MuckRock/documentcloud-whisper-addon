@@ -1,7 +1,6 @@
 """
 Upload transcribed audio files to DocumentCloud using Whisper
 """
-from __future__ import unicode_literals
 import os
 import shutil
 import sys
