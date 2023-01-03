@@ -76,6 +76,7 @@ class Whisper(AddOn):
                 os.chdir("./out/")
                 ydl_opts = {'quiet': True, 'noplaylist': True}
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    ydl.cache.remove()
                     ydl.download([url])
                 os.chdir("..")
                 downloaded = True
