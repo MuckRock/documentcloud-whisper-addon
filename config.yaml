@@ -4,7 +4,7 @@ description: >-
   an open source machine learning model.
 
   You may upload audio files from any publically accessible URL.  You may also
-  use share links from Google Drive, Dropbox, Mediafire and Wetransfer.  If you
+  use share links from Google Drive, Dropbox, Mediafire, Wetransfer, or YouTube.  If you
   use a share link for a folder, it will process all audio files in that folder.
 
 type: object
