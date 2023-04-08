@@ -5,4 +5,4 @@ tqdm
 patool
 bs4
 clouddl
-youtube_dl
+yt-dlp
