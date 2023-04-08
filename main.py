@@ -11,7 +11,7 @@ import whisper
 from documentcloud.addon import AddOn
 
 from clouddl import grab
-import youtube_dl
+from yt_dlp import YoutubeDL
 
 MIN_WORDS = 8
 
@@ -74,9 +74,11 @@ class Whisper(AddOn):
                 sys.exit(1)
             else:
                 os.chdir("./out/")
-                ydl_opts = {'quiet': True, 'noplaylist': True}
-                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    ydl.cache.remove()
+                ydl_opts = {'quiet': True, 'noplaylist': True,  'format': 'm4a/bestaudio/best', 
+                            'postprocessors': [{  # Extract audio using ffmpeg
+                                'key': 'FFmpegExtractAudio',
+                                'preferredcodec': 'm4a'}]}
+                with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 os.chdir("..")
                 downloaded = True
