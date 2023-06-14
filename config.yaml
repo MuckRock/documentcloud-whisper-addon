@@ -18,3 +18,6 @@ properties:
       A publically accessible audio file or a supported cloud storage share link
 required:
   - url
+categories:
+  - ai 
+  - file
