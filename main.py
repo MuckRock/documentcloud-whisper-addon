@@ -102,6 +102,10 @@ class Whisper(AddOn):
         # but decided to keep things simple for now
         project_id = self.data.get("project_id")
         access_level = self.data["access_level"]
+        if project_id is not None:
+            kwargs = {"project": project_id}
+        else:
+            kwargs = {}
         model = "base"
 
         self.check_permissions()
@@ -130,7 +134,7 @@ class Whisper(AddOn):
                     format_segments(result, file_)
 
                 self.client.documents.upload(
-                    f"{basename}.txt", original_extension="txt"
+                    f"{basename}.txt", original_extension="txt", access=access_level, **kwargs
                 )
                 successes += 1
 
