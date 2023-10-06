@@ -100,6 +100,8 @@ class Whisper(AddOn):
         url = self.data["url"]
         # we default to the base model - this could be made configurable
         # but decided to keep things simple for now
+        project_id = self.data.get("project_id")
+        access_level = self.data["access_level"]
         model = "base"
 
         self.check_permissions()
