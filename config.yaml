@@ -16,6 +16,13 @@ properties:
     format: uri
     description: >-
       A publically accessible audio file or a supported cloud storage share link
+  access_level:
+    title: Access level for uploaded documents (public, private(default), organization)
+    type: string
+    default: private
+  project_id:
+    title: Project ID of the project you would like the documents uploaded to (optional)
+    type: integer
 required:
   - url
 categories:

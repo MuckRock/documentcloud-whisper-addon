@@ -48,6 +48,7 @@ def format_segments(result, file):
 
 
 class Whisper(AddOn):
+    """ Whisper Add-On class"""
     def check_permissions(self):
         """The user must be a verified journalist to upload a document"""
         self.set_message("Checking permissions...")
@@ -68,16 +69,23 @@ class Whisper(AddOn):
         downloaded = grab(url, "./out/")
 
         if "youtube.com" in url or "youtu.be" in url:
-            r = requests.get(url)
-            if "Video unavailable" in r.text:
+            request_check = requests.get(url, timeout=15)
+            if "Video unavailable" in request_check.text:
                 self.set_message("Not a valid YouTube video URL, please try again")
                 sys.exit(1)
             else:
                 os.chdir("./out/")
-                ydl_opts = {'quiet': True, 'noplaylist': True,  'format': 'm4a/bestaudio/best', 
-                            'postprocessors': [{  # Extract audio using ffmpeg
-                                'key': 'FFmpegExtractAudio',
-                                'preferredcodec': 'm4a'}]}
+                ydl_opts = {
+                    "quiet": True,
+                    "noplaylist": True,
+                    "format": "m4a/bestaudio/best",
+                    "postprocessors": [
+                        {  # Extract audio using ffmpeg
+                            "key": "FFmpegExtractAudio",
+                            "preferredcodec": "m4a",
+                        }
+                    ],
+                }
                 with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 os.chdir("..")
@@ -90,16 +98,23 @@ class Whisper(AddOn):
                 title = "audio_transcription"
             if not ext:
                 ext = "mp3"
-            with requests.get(url, stream=True) as resp:
+            with requests.get(url, stream=True, timeout=15) as resp:
                 resp.raise_for_status()
                 with open(f"./out/{title}.{ext}", "wb") as audio_file:
                     for chunk in resp.iter_content(chunk_size=8192):
                         audio_file.write(chunk)
 
     def main(self):
+        """ Pulls the variables from UI, checks permissions, and runs the transcription"""
         url = self.data["url"]
         # we default to the base model - this could be made configurable
         # but decided to keep things simple for now
+        project_id = self.data.get("project_id")
+        access_level = self.data["access_level"]
+        if project_id is not None:
+            kwargs = {"project": project_id}
+        else:
+            kwargs = {}
         model = "base"
 
         self.check_permissions()
@@ -128,7 +143,10 @@ class Whisper(AddOn):
                     format_segments(result, file_)
 
                 self.client.documents.upload(
-                    f"{basename}.txt", original_extension="txt"
+                    f"{basename}.txt",
+                    original_extension="txt",
+                    access=access_level,
+                    **kwargs,
                 )
                 successes += 1
 
