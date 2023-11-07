@@ -92,16 +92,15 @@ class Whisper(AddOn):
                 os.chdir("..")
                 downloaded = True
         if "facebook.com" in url or "fb.watch" in url:
-            request_check = requests.get(url, timeout=15)
-            if "Video unavailable" in request_check.text:
-                self.set_message("Not a valid YouTube video URL, please try again")
-                sys.exit(1)
-            else: 
+            try:
                 os.chdir("./out/")
                 bash_cmd = f"lotc download '{url}'"
                 subprocess.call(bash_cmd)
                 os.chdir("..")
                 downloaded=True
+            except:
+                self.set_message("That Facebook URL was not able to be downloaded and transcribed")
+                sys.exit(1)
 
         if not downloaded:
             parsed_url = urlparse(url)
