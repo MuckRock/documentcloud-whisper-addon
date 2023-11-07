@@ -4,6 +4,7 @@ Upload transcribed audio files to DocumentCloud using Whisper
 import os
 import shutil
 import sys
+import subprocess
 from urllib.parse import urlparse
 
 import requests
@@ -90,6 +91,18 @@ class Whisper(AddOn):
                     ydl.download([url])
                 os.chdir("..")
                 downloaded = True
+        if "facebook.com" in url or "fb.watch" in url:
+            request_check = requests.get(url, timeout=15)
+            if "Video unavailable" in request_check.text:
+                self.set_message("Not a valid YouTube video URL, please try again")
+                sys.exit(1)
+            else: 
+                os.chdir("./out/")
+                bash_cmd = f"lotc download '{url}'"
+                subprocess.call(bash_cmd)
+                os.chdir("..")
+                downloaded=True
+
         if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
