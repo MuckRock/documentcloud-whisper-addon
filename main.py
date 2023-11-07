@@ -94,7 +94,9 @@ class Whisper(AddOn):
         if "facebook.com" in url or "fb.watch" in url:
             try:
                 os.chdir("./out/")
-                bash_cmd = f"lotc download '{url}'"
+                # Wrapping the url in quotes for command line interpreter
+                url_wrapped = f"'{url}'" 
+                bash_cmd = ["lotc", "download", url_wrapped]
                 subprocess.call(bash_cmd)
                 os.chdir("..")
                 downloaded=True
