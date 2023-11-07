@@ -5,5 +5,5 @@ tqdm
 patool
 bs4
 clouddl
-yt-dlp
+yt-dlp==2023.10.13
 lord-of-the-clips
