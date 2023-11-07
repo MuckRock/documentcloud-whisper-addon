@@ -49,7 +49,8 @@ def format_segments(result, file):
 
 
 class Whisper(AddOn):
-    """ Whisper Add-On class"""
+    """Whisper Add-On class"""
+
     def check_permissions(self):
         """The user must be a verified journalist to upload a document"""
         self.set_message("Checking permissions...")
@@ -99,12 +100,16 @@ class Whisper(AddOn):
                 bash_cmd = ["lotc", "download", url]
                 subprocess.call(bash_cmd)
                 os.chdir("..")
-                downloaded=True
+                downloaded = True
             except:
-                self.set_message("That Facebook URL was not able to be downloaded and transcribed")
+                self.set_message(
+                    "That Facebook URL was not able to be downloaded and transcribed"
+                )
                 sys.exit(1)
         if "fb.watch" in url:
-            self.set_message("Please provide the expanded Facebook video URL, fb.watch isn't supported")
+            self.set_message(
+                "Please provide the expanded Facebook video URL, fb.watch isn't supported"
+            )
             sys.exit(0)
         if not downloaded:
             parsed_url = urlparse(url)
@@ -121,7 +126,7 @@ class Whisper(AddOn):
                         audio_file.write(chunk)
 
     def main(self):
-        """ Pulls the variables from UI, checks permissions, and runs the transcription"""
+        """Pulls the variables from UI, checks permissions, and runs the transcription"""
         url = self.data["url"]
         # we default to the base model - this could be made configurable
         # but decided to keep things simple for now
