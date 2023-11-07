@@ -1,5 +1,5 @@
 title: Transcribe Audio, powered by Whisper
-description: >-
+description: |
   Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper),
   an open source machine learning model.
 
