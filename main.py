@@ -95,8 +95,8 @@ class Whisper(AddOn):
             try:
                 os.chdir("./out/")
                 # Wrapping the url in quotes for command line interpreter
-                url_wrapped = f"'{url}'" 
-                bash_cmd = ["lotc", "download", url_wrapped]
+                self.set_message(f"Downloading Facebook video at {url}")
+                bash_cmd = ["lotc", "download", url]
                 subprocess.call(bash_cmd)
                 os.chdir("..")
                 downloaded=True
