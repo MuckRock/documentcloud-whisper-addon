@@ -91,7 +91,7 @@ class Whisper(AddOn):
                     ydl.download([url])
                 os.chdir("..")
                 downloaded = True
-        if "facebook.com" in url or "fb.watch" in url:
+        if "facebook.com" in url:
             try:
                 os.chdir("./out/")
                 # Wrapping the url in quotes for command line interpreter
@@ -103,7 +103,9 @@ class Whisper(AddOn):
             except:
                 self.set_message("That Facebook URL was not able to be downloaded and transcribed")
                 sys.exit(1)
-
+        if "fb.watch" in url:
+            self.set_message("Please provide the expanded Facebook video URL, fb.watch isn't supported")
+            sys.exit(0)
         if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
