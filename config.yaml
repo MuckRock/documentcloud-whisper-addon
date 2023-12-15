@@ -2,7 +2,7 @@ title: Transcribe Audio
 description: |
   Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper),
   an open source machine learning model.
-
+instructions: |
   You may upload audio files from a publically accessible URL.  
   You may also use share links from Google Drive, Dropbox, Mediafire, Wetransfer, or YouTube.  
   If you use a share link for a folder, it will process all audio files in that folder.
@@ -11,8 +11,6 @@ description: |
   If you have a fb.watch link, paste it in your browser and hit enter to load the video.
   Grab the full FB video link from there. The correct URL will follow the format
   https://www.facebook.com/watch/?v=57937975397&ref=sharing
-
-instructions: ''
 type: object
 documents: []
 properties:
