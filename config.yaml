@@ -6,7 +6,7 @@ instructions: |
   You may upload audio files from a publically accessible URL.  
   You may also use share links from Google Drive, Dropbox, Mediafire, Wetransfer, or YouTube.  
   If you use a share link for a folder, it will process all audio files in that folder.
-  
+
   Facebook videos are now supported, but not URLs that start with fb.watch. 
   If you have a fb.watch link, paste it in your browser and hit enter to load the video.
   Grab the full FB video link from there. The correct URL will follow the format
@@ -21,14 +21,18 @@ properties:
     description: >-
       A publically accessible audio file or a supported cloud storage share link
   access_level:
-    title: Access level for uploaded documents (public, private(default), organization)
+    title: Access level for uploaded documents
     type: string
     default: private
+    enum:
+      - private
+      - organization
+      - public
   project_id:
     title: Project ID of the project you would like the documents uploaded to (optional)
     type: integer
 required:
   - url
 categories:
-  - ai 
+  - ai
   - file
