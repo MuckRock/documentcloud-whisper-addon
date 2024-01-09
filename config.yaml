@@ -1,7 +1,6 @@
 title: Transcribe Audio
 description: |
-  Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper),
-  an open source machine learning model.
+  Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper).
 instructions: |
   You may upload audio files from a publically accessible URL.  
   You may also use share links from Google Drive, Dropbox, Mediafire, Wetransfer, or YouTube.  
@@ -11,6 +10,9 @@ instructions: |
   If you have a fb.watch link, paste it in your browser and hit enter to load the video.
   Grab the full FB video link from there. The correct URL will follow the format
   https://www.facebook.com/watch/?v=57937975397&ref=sharing
+
+  You may specify which [model](https://github.com/openai/whisper#available-models-and-languages) of whisper you would like to use. 
+  Generally, the bigger the model, the more accurate the transcription, however it may run slower. 
 type: object
 documents: []
 properties:
@@ -32,8 +34,20 @@ properties:
     title: Project ID
     type: integer
     description: Project ID of the project you would like to upload the documents to. 
+  model: 
+    title: Model
+    type: string
+    description: Whisper model to use for transcription.
+    default: base
+    enum:
+      - tiny
+      - small
+      - base
+      - medium
+      - large
 required:
   - url
+  - model
 categories:
   - ai
   - file
