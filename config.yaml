@@ -41,8 +41,8 @@ properties:
     default: base
     enum:
       - tiny
-      - small
       - base
+      - small
       - medium
       - large
 required:
