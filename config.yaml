@@ -29,8 +29,9 @@ properties:
       - organization
       - public
   project_id:
-    title: Project ID of the project you would like the documents uploaded to (optional)
+    title: Project ID
     type: integer
+    description: Project ID of the project you would like to upload the documents to. 
 required:
   - url
 categories:
