@@ -128,15 +128,13 @@ class Whisper(AddOn):
     def main(self):
         """Pulls the variables from UI, checks permissions, and runs the transcription"""
         url = self.data["url"]
-        # we default to the base model - this could be made configurable
-        # but decided to keep things simple for now
         project_id = self.data.get("project_id")
         access_level = self.data["access_level"]
         if project_id is not None:
             kwargs = {"project": project_id}
         else:
             kwargs = {}
-        model = "base"
+        model = self.data.get("model")
 
         self.check_permissions()
 
