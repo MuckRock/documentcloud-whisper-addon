@@ -4,12 +4,13 @@ Upload transcribed audio files to DocumentCloud using Whisper
 import os
 import shutil
 import sys
-import subprocess
+from subprocess import call, CalledProcessError
 from urllib.parse import urlparse
 
 import requests
 import whisper
 from documentcloud.addon import AddOn
+from documentcloud.exceptions import APIError
 
 from clouddl import grab
 from yt_dlp import YoutubeDL
@@ -51,10 +52,19 @@ def format_segments(result, file):
 class Whisper(AddOn):
     """Whisper Add-On class"""
 
+    def check_project(self, project_id):
+        """Checks whether we can retrieve the project, handles the error right away if not"""
+        try:
+            self.client.projects.get(project_id)
+        except APIError:
+            self.set_message("The project you provided does not exist, try again.")
+            sys.exit(0)
+
     def check_permissions(self):
         """The user must be a verified journalist to upload a document"""
         self.set_message("Checking permissions...")
         user = self.client.users.get("me")
+        # pylint: disable=no-member
         if not user.verified_journalist:
             self.set_message(
                 "You need to be verified to use this add-on. Please verify your "
@@ -98,14 +108,14 @@ class Whisper(AddOn):
                 # Wrapping the url in quotes for command line interpreter
                 self.set_message(f"Downloading Facebook video at {url}")
                 bash_cmd = ["lotc", "download", url]
-                subprocess.call(bash_cmd)
+                call(bash_cmd)
                 os.chdir("..")
                 downloaded = True
-            except:
+            except CalledProcessError:
                 self.set_message(
-                    "That Facebook URL was not able to be downloaded and transcribed"
+                    "The Facebook URL was not able to be downloaded and transcribed."
                 )
-                sys.exit(1)
+                sys.exit(0)
         if "fb.watch" in url:
             self.set_message(
                 "Please provide the expanded Facebook video URL, fb.watch isn't supported"
@@ -137,16 +147,16 @@ class Whisper(AddOn):
         model = self.data.get("model")
 
         self.check_permissions()
-
+        self.check_project(project_id)
         self.fetch_files(url)
 
         self.set_message("Preparing for transcription...")
 
-        model = whisper.load_model(model)
+        model = whisper.load_model(model)  # pylint: disable=no-member
 
         errors = 0
         successes = 0
-        for current_path, folders, files in os.walk("./out/"):
+        for current_path, _folders, files in os.walk("./out/"):
             for file_name in files:
                 file_name = os.path.join(current_path, file_name)
                 basename = os.path.basename(file_name)
@@ -158,7 +168,7 @@ class Whisper(AddOn):
                     errors += 1
                     continue
 
-                with open(f"{basename}.txt", "w+") as file_:
+                with open(f"{basename}.txt", "w+", encoding="utf-8") as file_:
                     format_segments(result, file_)
 
                 self.client.documents.upload(
