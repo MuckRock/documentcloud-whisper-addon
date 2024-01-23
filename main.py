@@ -59,6 +59,8 @@ class Whisper(AddOn):
         except APIError:
             self.set_message("The project you provided does not exist, try again.")
             sys.exit(0)
+        except ValueError:
+            pass
 
     def check_permissions(self):
         """The user must be a verified journalist to upload a document"""
