@@ -6,6 +6,6 @@ jobs:
   Run-Add-On:
     uses: MuckRock/documentcloud-addon-workflows/.github/workflows/run-addon.yml@v1
     with:
-      timeout: 180
+      timeout: 360
       python-version: "3.10.12"
       apt-packages: ffmpeg
