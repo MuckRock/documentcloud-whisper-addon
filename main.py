@@ -2,6 +2,7 @@
 Upload transcribed audio files to DocumentCloud using Whisper
 """
 import os
+import json
 import shutil
 import sys
 from subprocess import call, CalledProcessError
@@ -172,13 +173,28 @@ class Whisper(AddOn):
 
                 with open(f"{basename}.txt", "w+", encoding="utf-8") as file_:
                     format_segments(result, file_)
+                try:
+                    self.client.documents.upload(
+                        f"{basename}.txt",
+                        original_extension="txt",
+                        access=access_level,
+                        **kwargs,
+                    )
+                except APIError as e:
+                    error_data = json.loads(e.response)
+                    if "projects" in error_data:
+                        self.set_message(
+                            "Please check that you provided either a"
+                            "valid project ID or left it completely blank. Try again."
+                        )
+                        sys.exit(0)
+                    else:
+                        self.set_message(
+                            "API error reached, contact info@documentcloud.org for support"
+                        )
+                        print(e)
+                        sys.exit(1)
 
-                self.client.documents.upload(
-                    f"{basename}.txt",
-                    original_extension="txt",
-                    access=access_level,
-                    **kwargs,
-                )
                 successes += 1
 
         sfiles = "file" if successes == 1 else "files"
