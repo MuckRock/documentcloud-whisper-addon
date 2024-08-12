@@ -90,6 +90,7 @@ class Whisper(AddOn):
                 sys.exit(1)
             else:
                 self.set_message("Unfortunately, due to new bot detection policies, YouTube videos are no longer supported in this Add-On.")
+                sys.exit(0)
                 """os.chdir("./out/")
                 ydl_opts = {
                     "quiet": True,
