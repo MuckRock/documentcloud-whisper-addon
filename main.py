@@ -89,7 +89,8 @@ class Whisper(AddOn):
                 self.set_message("Not a valid YouTube video URL, please try again")
                 sys.exit(1)
             else:
-                os.chdir("./out/")
+                self.set_message("Unfortunately, due to new bot detection policies, YouTube videos are no longer supported in this Add-On.")
+                """os.chdir("./out/")
                 ydl_opts = {
                     "quiet": True,
                     "noplaylist": True,
@@ -104,7 +105,7 @@ class Whisper(AddOn):
                 with YoutubeDL(ydl_opts) as ydl:
                     ydl.download([url])
                 os.chdir("..")
-                downloaded = True
+                downloaded = True """
         if "facebook.com" in url:
             try:
                 os.chdir("./out/")
