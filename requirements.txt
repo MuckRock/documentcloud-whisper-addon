@@ -5,5 +5,4 @@ tqdm
 patool
 bs4
 clouddl
-yt-dlp
 lord-of-the-clips

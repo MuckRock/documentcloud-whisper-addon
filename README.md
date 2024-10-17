@@ -8,9 +8,6 @@
 Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper).
 
 You may upload audio files from any publically accessible URL.  You may also
-use share links from Google Drive, Dropbox, Mediafire, Wetransfer and YouTube. If you
+use share links from Google Drive, Dropbox, Mediafire, Wetransfer and Facebook. If you
 use a share link for a folder, it will process all files in that folder.
 
-*NOTE*: You must have a verified account to use this Add-On.  [If you have not
-yet verified your account, please do so
-here.](https://airtable.com/shrZrgdmuOwW0ZLPM)
