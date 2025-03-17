@@ -5,4 +5,3 @@ tqdm
 patool
 bs4
 clouddl
-lord-of-the-clips
