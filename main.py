@@ -108,24 +108,22 @@ class Whisper(AddOn):
                 os.chdir("..")
                 downloaded = True """
         if "facebook.com" in url:
-            try:
-                os.chdir("./out/")
-                # Wrapping the url in quotes for command line interpreter
-                self.set_message(f"Downloading Facebook video at {url}")
-                bash_cmd = ["lotc", "download", url]
-                call(bash_cmd)
-                os.chdir("..")
-                downloaded = True
-            except CalledProcessError:
-                self.set_message(
-                    "The Facebook URL was not able to be downloaded and transcribed."
-                )
-                sys.exit(0)
-        if "fb.watch" in url:
-            self.set_message(
-                "Please provide the expanded Facebook video URL, fb.watch isn't supported"
-            )
-            sys.exit(0)
+            os.chdir("./out/")
+            ydl_opts = {
+                "quiet": True,
+                "noplaylist": True,
+                "format": "m4a/bestaudio/best",
+                "postprocessors": [
+                    {  # Extract audio using ffmpeg
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "m4a",
+                    }
+                ],
+            }
+            with YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+            os.chdir("..")
+            downloaded = True
         if not downloaded:
             parsed_url = urlparse(url)
             basename = os.path.basename(parsed_url.path)
