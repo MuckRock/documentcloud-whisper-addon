@@ -94,7 +94,7 @@ class Whisper(AddOn):
                 """
                 os.chdir("./out/")
                 ydl_opts = {
-                    "impersonate": "chrome:windows-10",
+                    "impersonate": "Chrome",
                     "quiet": True,
                     "noplaylist": True,
                     "format": "m4a/bestaudio/best",
