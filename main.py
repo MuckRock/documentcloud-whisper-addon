@@ -94,7 +94,8 @@ class Whisper(AddOn):
                 """
                 os.chdir("./out/")
                 ydl_opts = {
-                    "impersonate": "Chrome",
+                    "user-agent": "Transcribe Audio Add-On",
+                    "referer": "https://documentcloud.org",
                     "quiet": True,
                     "noplaylist": True,
                     "format": "m4a/bestaudio/best",
