@@ -1,4 +1,4 @@
-python-documentcloud==4.3.0
+python-documentcloud==4.8.1
 requests
 git+https://github.com/openai/whisper.git
 tqdm
@@ -6,3 +6,4 @@ patool
 bs4
 clouddl
 yt-dlp
+python-squarelet==0.6.0
