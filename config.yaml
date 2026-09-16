@@ -1,6 +1,6 @@
 title: Transcribe Audio
 description: |
-  Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper).
+  Transcribe audio files using [OpenAI's Whisper](https://github.com/openai/whisper). This uses a local Whisper model accessed from within the Add-On and does not send data to OpenAI. 
 instructions: |
   You may upload audio files from a publically accessible URL or links from
   Google Drive, Dropbox, Mediafire, Wetransfer, or Facebook.  
